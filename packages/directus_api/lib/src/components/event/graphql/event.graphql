@@ -1,0 +1,73 @@
+#  Copyright (c) 2021, Nino Gjoni
+#  https://github/ngjoni
+
+query getAllVenues {
+  venues {
+    begin_date
+    #description
+    id
+    is_active
+    name
+    status
+    place {
+      name
+      is_company
+      is_sightseeing
+      #headline
+      #description
+      translations {
+        #headline
+        #description
+      }
+    }
+    image {
+      id
+      # name
+      filename_download
+      #description
+    }
+  }
+}
+
+query getOneVenue($id: ID!) {
+  venues_by_id(id: $id) {
+    id
+    name
+    #description
+    status
+    begin_date
+    end_date
+    is_active
+    image {
+      id
+      # name
+      filename_download
+      #description
+    }
+    place {
+      id
+    }
+  }
+}
+
+mutation addVenue($input: create_venues_input!) {
+  create_venues_item(data: $input) {
+    id
+    name
+    status
+  }
+}
+
+mutation updateVenue($id: ID!, $input: update_venues_input!) {
+  update_venues_item(id: $id, data: $input) {
+    id
+    status
+    name
+  }
+}
+
+mutation deleteVenue($id: ID!) {
+  delete_venues_item(id: $id) {
+    id
+  }
+}

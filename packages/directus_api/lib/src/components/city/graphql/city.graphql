@@ -1,0 +1,20 @@
+query getAllCities {
+  cities {
+    id
+    name
+    status
+    places {
+      id
+      # headline
+      is_sightseeing
+      is_company
+      name
+      translations {
+        # headline
+        id
+        description
+        name
+      }
+    }
+  }
+}

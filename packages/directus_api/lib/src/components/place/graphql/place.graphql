@@ -1,0 +1,199 @@
+# Copyright (c) 2021, Nino Gjoni
+# https://github/ngjoni
+
+# TODO: getAllPlaces and getOnePlace has same code -> create fragments!
+query fetchPlaces {
+  places {
+    id
+    user_created {
+      id
+      first_name
+    }
+    venues {
+      id
+      name
+      user_created {
+        id
+        first_name
+      }
+    }
+  }
+}
+
+query getAllPlaces {
+  places {
+    id
+    status
+    name
+    # headline
+    description
+    is_company
+    is_sightseeing
+    address
+    latitude
+    longitude
+    website
+    translations {
+      name
+      # headline
+      #description
+    }
+    image {
+      id
+      # name
+      filename_download
+      #description
+    }
+    venues {
+      id
+      status
+      name
+      #description
+      is_active
+      begin_date
+      end_date
+      image {
+        id
+        # name
+        filename_download
+        #description
+      }
+    }
+    categories {
+      id
+      categories_id {
+        name
+      }
+    }
+  }
+}
+
+query getOnePlace($id: ID!) {
+  places_by_id(id: $id) {
+    id
+    status
+    name
+    # headline
+    description
+    is_company
+    is_sightseeing
+    latitude
+    longitude
+    website
+    translations {
+      name
+      # headline
+      #description
+    }
+    image {
+      id
+      # name
+      filename_download
+      #description
+    }
+    venues {
+      id
+      status
+      name
+      #description
+      is_active
+      begin_date
+      end_date
+      image {
+        id
+        # name
+        filename_download
+        #description
+      }
+    }
+  }
+}
+
+query getSightSeeingPlaces {
+  places(filter: { is_sightseeing: { _eq: true } }) {
+    id
+    # headline
+    description
+    is_sightseeing
+    name
+    is_company
+    date_created
+    status
+  }
+}
+
+query getCompanyPlaces {
+  places(filter: { is_company: { _eq: true } }) {
+    id
+    # headline
+    description
+    is_sightseeing
+    name
+    is_company
+    date_created
+    status
+  }
+}
+
+# Filtered markers on visible map!
+query fetchPlacesFilter(
+  $longf: Float!
+  $latf: Float!
+  $longs: Float!
+  $lats: Float!
+) {
+  places(
+    filter: {
+      _and: [
+        { longitude: { _lt: longf }, latitude: { _lt: latf } }
+        { longitude: { _gt: longs }, latitude: { _gt: lats } }
+      ]
+    }
+  ) {
+    latitude
+    longitude
+    address
+    name
+  }
+}
+
+query getVenuesFromOnePlace($id: ID!) {
+  places_by_id(id: $id) {
+    venues {
+      id
+      date_created
+      date_updated
+      name
+      #description
+      begin_date
+      end_date
+      image {
+        id
+      }
+    }
+  }
+}
+
+mutation addPlace($input: create_places_input!) {
+  create_places_item(data: $input) {
+    id
+    status
+    name
+    #description
+  }
+}
+
+mutation updatePlace($id: ID!, $input: update_places_input!) {
+  update_places_item(id: $id, data: $input) {
+    id
+    status
+    name
+    #description
+  }
+}
+
+mutation deletePlace($id: ID!) {
+  delete_places_item(id: $id) {
+    id
+  }
+}
